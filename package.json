@@ -2,6 +2,7 @@
   "name": "mqtt2thingspeek",
   "version": "1.0.0",
   "description": "subscribe tomqtt topic and foward to thingspeak",
+  "repository": "git@github.com:smougenot/mqtt2thingspeak.git",
   "author": {
     "name": "Sylvain Mougenot",
     "email": "sylvain.mougenot@gmail.com",
@@ -22,7 +23,8 @@
   "dependencies": {
     "colors": "^1.1.2",
     "debug": "^2.2.0",
-    "mqtt": "^1.6.1"
+    "mqtt": "^1.6.1",
+    "request": "^2.67.0"
   },
   "devDependencies": {
     "babel-core": "^6.3.17",
