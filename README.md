@@ -20,6 +20,10 @@ $ npm install --save mqtt2thingspeak
 var mqtt2thingspeak = require('mqtt2thingspeak');
 ```
 
+```bash
+DEBUG=app node --harmony dist/mqtt2ts.js
+```
+
 ## License
 
 ISC © [Sylvain Mougenot]()
