@@ -32,4 +32,4 @@ ISC © [Sylvain Mougenot]()
 [daviddm-image]: https://david-dm.org/smougenot/mqtt2thingspeak.svg?theme=shields.io
 [daviddm-url]: https://david-dm.org/smougenot/mqtt2thingspeak
 [coveralls-image]: https://coveralls.io/repos/smougenot/mqtt2thingspeak/badge.svg
-[coveralls-url]: https://coveralls.io/r/smougenot/mqtt2thingspeak
+[coveralls-url]:   https://coveralls.io/github/smougenot/mqtt2thingspeak
