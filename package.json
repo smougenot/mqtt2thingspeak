@@ -1,0 +1,28 @@
+{
+  "name": "mqtt2thingspeek",
+  "version": "1.0.0",
+  "description": "subscribe tomqtt topic and foward to thingspeak",
+  "author": {
+    "name": "Sylvain Mougenot",
+    "email": "sylvain.mougenot@gmail.com",
+    "url": ""
+  },
+  "main": "mqtt2ts.js",
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": "~0.12.0"
+  },
+  "scripts": {
+    "prepublish": "gulp prepublish",
+    "test": "gulp"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "mqtt": "^1.6.1"
+  },
+  "devDependencies": {
+    "gulp": "~3.9.0"
+  }
+}
