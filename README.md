@@ -23,6 +23,13 @@ var mqtt2thingspeak = require('mqtt2thingspeak');
 ```bash
 DEBUG=app node --harmony dist/mqtt2ts.js
 ```
+Can be started as a deamon (using /etc/init.d) by linking the file script/mqtt2thingspeak to /etc/init.d
+It might need some editing for setup
+
+```bash
+ln -s "$(pwd)/script/mqtt2thingspeak" /etc/init.d/
+service mqtt2thingspeak start
+```
 
 ## License
 

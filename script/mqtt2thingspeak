@@ -13,8 +13,10 @@ LOG_FILE="$LOG_DIR/app.log"
 NODE_EXEC=$(which node)
 
 # app env params
-_debug='app'
 _url='mqtt://localhost:1883'
+# the thingspeak api key
+_ts_key='YOUR_KEY'
+_debug='app'
 
 # node options
 _node_opts='--harmony'
@@ -64,6 +66,7 @@ start_it() {
 #    _env_vars="$_env_vars NODE_CONFIG_DIR=$CONFIG_DIR"
     _env_vars="$_env_vars DEBUG=$_debug"
     _env_vars="$_env_vars MQTT_URL=$_url"
+    _env_vars="$_env_vars TS_KEY=$_ts_key"
 
     echo "Starting node app ..."
     echo "cd $APP_DIR && $_env_vars $NODE_EXEC $_node_opts $APP_DIR/$NODE_APP 1>$LOG_FILE 2>&1 & echo \$! > $PID_FILE" | sudo -i -u $USER
