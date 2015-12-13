@@ -4,7 +4,7 @@
 [![Dependency Status][daviddm-image]][daviddm-url] 
 [![Coverage percentage][coveralls-image]][coveralls-url]
 
-> Transfert mqqt message to thingspeak channel
+> Transfers mqtt message to thingspeak channel
 
 
 ## Install
