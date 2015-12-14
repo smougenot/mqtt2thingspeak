@@ -91,7 +91,7 @@ stop_process() {
     local PID="$(get_pid)"
     local PGID="$(ps -o pgid --no-headers $PID)"
     echo "Killing all processes linked to PID $PID using PGID $PGID"
-    kill -TERM -${PGID}
+    kill -TERM "-${PGID}"
 }
 
 remove_pid_file() {
