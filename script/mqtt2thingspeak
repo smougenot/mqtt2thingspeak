@@ -2,7 +2,7 @@
 
 USER="root"
 #APP_DIR='/opt/mqtt2thingspeak/'
-APP_DIR="$(cd $(dirname $0); cd ..; pwd)"
+APP_DIR="$(cd $(dirname $(readlink $0)); cd ..; pwd)"
 NODE_APP='lib/mqtt2ts.js'
 #NODE_ENV="production"
 #CONFIG_DIR="$APP_DIR"
@@ -57,26 +57,27 @@ is_running() {
 
 start_it() {
     mkdir -p "$PID_DIR"
-    chown $USER:$USER "$PID_DIR"
+    chown ${USER}:${USER} "$PID_DIR"
     mkdir -p "$LOG_DIR"
-    chown $USER:$USER "$LOG_DIR"
+    chown ${USER}:${USER} "$LOG_DIR"
 
     _env_vars=
-#    _env_vars="$_env_vars NODE_ENV=$NODE_ENV"
-#    _env_vars="$_env_vars NODE_CONFIG_DIR=$CONFIG_DIR"
     _env_vars="$_env_vars DEBUG=$_debug"
     _env_vars="$_env_vars MQTT_URL=$_url"
     _env_vars="$_env_vars TS_KEY=$_ts_key"
 
     echo "Starting node app ..."
-    echo "cd $APP_DIR && $_env_vars $NODE_EXEC $_node_opts $APP_DIR/$NODE_APP 1>$LOG_FILE 2>&1 & echo \$! > $PID_FILE" | sudo -i -u $USER
+    local SCRIPT="cd $APP_DIR && $_env_vars $NODE_EXEC $_node_opts $APP_DIR/$NODE_APP"
+    local CMD="$SCRIPT &> \"$LOG_FILE\" & echo \$!"
+    su -c "$CMD" ${USER} > "$PID_FILE"
     echo "Node app started with pid $(get_pid)"
 }
 
 stop_process() {
-    PID=$(get_pid)
-    echo "Killing process $PID"
-    kill $PID
+    local PID="$(get_pid)"
+    local PGID="$(ps -o pgid --no-headers $PID)"
+    echo "Killing all processes linked to PID $PID using PGID $PGID"
+    kill -TERM -${PGID}
 }
 
 remove_pid_file() {
@@ -94,7 +95,7 @@ start_app() {
             exit 1
         else
             echo "Node app stopped, but pid file exists"
-            if [ $FORCE_OP = true ]
+            if [ ${FORCE_OP} = true ]
             then
                 echo "Forcing start anyways"
                 remove_pid_file
@@ -112,12 +113,12 @@ stop_app() {
         if is_running
         then
             echo "Stopping node app ..."
-            stop_process
+            stop_process && \
             remove_pid_file
             echo "Node app stopped"
         else
             echo "Node app already stopped, but pid file exists"
-            if [ $FORCE_OP = true ]
+            if [ ${FORCE_OP} = true ]
             then
                 echo "Forcing stop anyways ..."
                 remove_pid_file
@@ -156,7 +157,7 @@ case "$2" in
     ;;
 
     *)
-        echo $USAGE
+        echo ${USAGE}
         exit 1
     ;;
 esac
@@ -180,7 +181,7 @@ case "$1" in
     ;;
 
     *)
-        echo $USAGE
+        echo ${USAGE}
         exit 1
     ;;
 esac
