@@ -1,11 +1,8 @@
 #!/bin/sh
 
 USER="root"
-#APP_DIR='/opt/mqtt2thingspeak/'
 APP_DIR="$(cd $(dirname $(readlink $0)); cd ..; pwd)"
 NODE_APP='lib/mqtt2ts.js'
-#NODE_ENV="production"
-#CONFIG_DIR="$APP_DIR"
 PID_DIR="$APP_DIR/pid"
 PID_FILE="$PID_DIR/app.pid"
 LOG_DIR="$APP_DIR/log"
@@ -53,6 +50,23 @@ get_pid() {
 is_running() {
     PID=$(get_pid)
     ! [ -z "$(ps aux | awk '{print $2}' | grep "^$PID$")" ]
+}
+
+logrotate_it() {
+    local LOGROTATE='/etc/logrotate.d/mqtt2thingspeak'
+    if [ -d /etc/logrotate.d ] && [ ! -f "${LOGROTATE}" ]; then
+    cat <<EOF > "${LOGROTATE}"
+LOG_DIR/*.* {
+        daily
+        compress
+        rotate 30
+        delaycompress
+        copytruncate
+        dateext
+        olddir LOG_DIR/backup
+}
+EOF
+    fi
 }
 
 start_it() {
@@ -105,6 +119,7 @@ start_app() {
     else
         start_it
     fi
+    logrotate_it
 }
 
 stop_app() {
