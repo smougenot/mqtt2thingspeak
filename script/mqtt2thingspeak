@@ -54,16 +54,21 @@ is_running() {
 
 logrotate_it() {
     local LOGROTATE='/etc/logrotate.d/mqtt2thingspeak'
+    local LOG_BACKUP="${LOG_DIR}/backup"
+    if [ ! -d "${LOG_BACKUP}" ]; then
+        mkdir -p "${LOG_BACKUP}"
+        chown ${USER}:${USER} ${LOG_BACKUP}
+    fi
     if [ -d /etc/logrotate.d ] && [ ! -f "${LOGROTATE}" ]; then
-    cat <<EOF > "${LOGROTATE}"
-LOG_DIR/*.* {
+        cat <<EOF > "${LOGROTATE}"
+${LOG_DIR}/*.* {
         daily
         compress
         rotate 30
         delaycompress
         copytruncate
         dateext
-        olddir LOG_DIR/backup
+        olddir ${LOG_BACKUP}
 }
 EOF
     fi
